@@ -1,23 +1,36 @@
 <template>
-  <div class="container mx-auto px-6 py-7 lg:px-40 lg:py-14">
-    <Header />
+  <div id="app">
+    <!-- Conditional rendering untuk menampilkan Header -->
+    <Header v-if="$route.meta.showHeader" />
 
+    <!-- Content lainnya -->
     <router-view v-slot="{ Component, route }">
-      <transition
-        :enter-active-class="route.meta.enterClass"
-        :leave-active-class="route.meta.leaveClass"
-        mode="out-in"
-      >
+      <!-- Cek apakah route saat ini adalah halaman Login atau Register -->
+      <div v-if="route.name === 'Login' || route.name === 'Register'">
+        <!-- Tampilkan konten khusus untuk halaman Login dan Register -->
         <component :is="Component" />
-      </transition>
+      </div>
+      <!-- Jika bukan halaman Login atau Register, tampilkan div container -->
+      <div v-else class="container mx-auto px-6 py-7 lg:px-40 lg:py-14">
+        <Header/>
+        <transition
+          :enter-active-class="route.meta.enterClass"
+          :leave-active-class="route.meta.leaveClass"
+          mode="out-in"
+        >
+          <component :is="Component" />
+        </transition>
+      </div>
     </router-view>
-    hai
   </div>
 </template>
 
-<script setup>
-import Header from './components/Header.vue'
-</script>
+<script>
+import Header from './components/Header.vue';
 
-<style>
-</style>
+export default {
+  components: {
+    Header
+  }
+};
+</script>
