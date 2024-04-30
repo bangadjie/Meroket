@@ -11,6 +11,7 @@
         <component :is="Component" />
       </transition>
     </router-view>
+    hai
   </div>
 </template>
 
