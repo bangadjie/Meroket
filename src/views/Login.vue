@@ -2,7 +2,7 @@
       <div class="login">
          <img src="assets/img/login-bg.png" alt="login image" class="login__img">
 
-         <form action="" class="login__form">
+         <form action="" class="login__form" @submit.prevent="submitLogin">
             <h1 class="login__title">Login</h1>
 
             <div class="login__content">
@@ -10,8 +10,8 @@
                   <i class="ri-user-3-line login__icon"></i>
 
                   <div class="login__box-input">
-                     <input type="email" required class="login__input" id="login-email" placeholder=" ">
-                     <label for="login-email" class="login__label">Email</label>
+                    <input type="email" required v-model="form.email" class="login__input" id="login-email" placeholder=" ">
+                    <label for="login-email" class="login__label">Email</label>
                   </div>
                </div>
 
@@ -19,9 +19,8 @@
                   <i class="ri-lock-2-line login__icon"></i>
 
                   <div class="login__box-input">
-                     <input type="password" required class="login__input" id="login-pass" placeholder=" ">
-                     <label for="login-pass" class="login__label">Password</label>
-                     <i class="ri-eye-off-line login__eye" id="login-eye"></i>
+                     <input type="password" required v-model="form.password" class="login__input" id="login-pass" placeholder=" ">
+                      <label for="login-pass" class="login__label">Password</label>
                   </div>
                </div>
             </div>
@@ -32,7 +31,7 @@
                   <label for="login-check" class="login__check-label">Remember me</label>
                </div>
 
-               <a href="#" class="login__forgot">Forgot Password?</a>
+               <a href="#" class="login__forgot" @click="redirectToResetPassword">Forgot Password?</a>
             </div>
 
             <button type="submit" class="login__button">Login</button>
@@ -42,38 +41,72 @@
               <a>Sign Up</a>
             </router-link>
             </p>
-         </form>
+        </form>
       </div>
 
 </template>
 
 <script>
-import { RouterLink, RouterView } from 'vue-router';
-/*=============== SHOW HIDDEN - PASSWORD ===============*/
-const showHiddenPass = (loginPass, loginEye) =>{
-   const input = document.getElementById(loginPass),
-         iconEye = document.getElementById(loginEye)
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+import { useRouter } from 'vue-router';
+import Swal from 'sweetalert2';
 
-   iconEye.addEventListener('click', () =>{
-      // Change password to text
-      if(input.type === 'password'){
-         // Switch to text
-         input.type = 'text'
+export default {
+  setup() {
+    const router = useRouter();
+    const form = ref({
+      email: '',
+      password: ''
+    });
 
-         // Icon change
-         iconEye.classList.add('ri-eye-line')
-         iconEye.classList.remove('ri-eye-off-line')
-      } else{
-         // Change to password
-         input.type = 'password'
+    onMounted(() => {
+      // Initialize form values here if needed
+    });
 
-         // Icon change
-         iconEye.classList.remove('ri-eye-line')
-         iconEye.classList.add('ri-eye-off-line')
+    const submitLogin = async () => {
+      // Melihat data yang akan dikirim
+      console.log('Data yang akan dipost:', form.value);
+
+      try {
+        const response = await axios.post('http://localhost:8000/api/login', {
+          email: form.value.email,
+          password: form.value.password
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        // Menampilkan respons dari server
+        console.log('Respon dari server:', response.data);
+
+        router.push('/home');
+      } catch (error) {
+        showErrorMessage('Login failed. Please check your credentials.');
       }
-   })
-}
+    };
 
+    const showErrorMessage = (message) => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: message
+      });
+    };
+
+    const redirectToResetPassword = () => {
+      // Redirect pengguna ke halaman reset password
+      window.location.href = 'http://localhost:8000/resetpassword';
+    };
+
+    return {
+      form,
+      submitLogin,
+      redirectToResetPassword
+    };
+  }
+};
 </script>
 
 <style>
@@ -229,11 +262,14 @@ img {
   width: 100%;
   padding: 1rem;
   border-radius: 0.5rem;
-  background-color: var(--white-color);
+  background-color: transparent; /* Change background to transparent */
+  border: 2px solid var(--white-color); /* Set border to white */
+  color: var(--white-color); /* Set text color to white */
   font-weight: var(--font-medium);
   cursor: pointer;
   margin-bottom: 2rem;
 }
+
 .login__register {
   text-align: center;
 }
