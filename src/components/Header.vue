@@ -1,5 +1,4 @@
 <script setup>
-import Search from "./Search.vue";
 import HeartIcon from "./icons/HeartIcon.vue";
 </script>
 <template>
@@ -8,7 +7,7 @@ import HeartIcon from "./icons/HeartIcon.vue";
       <h1
         class="text-xl font-semibold tracking-wider text-gray-200 md:text-2xl"
       >
-        BE MOVIE
+        MEROKET
       </h1>
     </router-link>
 
@@ -18,7 +17,7 @@ import HeartIcon from "./icons/HeartIcon.vue";
     >
       <HeartIcon />
 
-      <span class="text-lg tracking-wide md:text-xl">Tambah Movies</span>
+      <span class="text-lg tracking-wide md:text-xl">Tambah Lomba</span>
     </router-link>
 
   </div>
@@ -33,6 +32,6 @@ import HeartIcon from "./icons/HeartIcon.vue";
       lg:text-sm
     "
   >
-    Temukan Film Favoritemu!
+    Temukan Lombamu!
   </p>
 </template>

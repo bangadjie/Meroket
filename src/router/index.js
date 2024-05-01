@@ -39,24 +39,6 @@ const routes = [
       leaveClass: "animate__animated animate__fadeOutRight",
     },
   },
-  {
-    path: "/fav",
-    name: "Fav",
-    component: () => import("../views/Favorite.vue"),
-    meta: {
-      enterClass: "animate__animated animate__fadeInLeft",
-      leaveClass: "animate__animated animate__fadeOutLeft",
-    },
-  },
-  {
-    path: "/:pathMatch(.*)*",
-    name: "NotFound",
-    component: () => import("../views/NotFound.vue"),
-    meta: {
-      enterClass: "animate__animated animate__fadeInLeft",
-      leaveClass: "animate__animated animate__fadeOutLeft",
-    },
-  },
 ];
 
 const router = createRouter({
