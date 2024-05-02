@@ -49,6 +49,16 @@ const routes = [
       leaveClass: "animate__animated animate__fadeOutRight",
     },
   },
+  {
+    path: "/daftar/:id",
+    name: "daftar",
+    component: () => import("../views/Daftar_Kompetisi.vue"),
+    props: true,
+    meta: {
+      enterClass: "animate__animated animate__fadeInRight",
+      leaveClass: "animate__animated animate__fadeOutRight",
+    },
+  },
 ];
 
 const router = createRouter({

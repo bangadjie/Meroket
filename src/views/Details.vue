@@ -1,12 +1,14 @@
 <script setup>
 import { defineProps, ref } from "vue";
 import axios from "axios";
+import { useRouter } from "vue-router"; // Impor useRouter
 
 const props = defineProps({
   id: String,
 });
 
 const kompetisiDetail = ref(null);
+const router = useRouter(); // Inisialisasi router
 
 // Fungsi untuk memuat detail kompetisi berdasarkan ID
 const loadKompetisiDetail = async () => {
@@ -21,6 +23,11 @@ const loadKompetisiDetail = async () => {
 // Memanggil fungsi untuk memuat detail kompetisi saat komponen dimuat
 import { onMounted } from "vue";
 onMounted(loadKompetisiDetail);
+
+const daftarKompetisi = () => {
+  // Arahkan pengguna ke halaman /daftar dengan menyertakan properti id
+  router.push({ path: `/daftar/${props.id}` });
+};
 </script>
 
 <template>

@@ -36,6 +36,9 @@
 <script setup>
 import axios from 'axios';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router'; // Mengimpor useRouter dari Vue Router
+
+const router = useRouter(); // Inisialisasi router
 
 const form = ref({
   nama_kompetisi: '',

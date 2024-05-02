@@ -3,7 +3,7 @@ import HeartIcon from "./icons/HeartIcon.vue";
 </script>
 <template>
   <div class="flex justify-between items-center">
-    <router-link to="/">
+    <router-link to="/home">
       <h1
         class="text-xl font-semibold tracking-wider text-gray-200 md:text-2xl"
       >
@@ -19,6 +19,7 @@ import HeartIcon from "./icons/HeartIcon.vue";
 
       <span class="text-lg tracking-wide md:text-xl">Tambah Lomba</span>
     </router-link>
+    
 
   </div>
   <p
