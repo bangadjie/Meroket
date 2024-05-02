@@ -12,7 +12,7 @@ import HeartIcon from "./icons/HeartIcon.vue";
     </router-link>
 
     <router-link
-      to="/fav"
+      to="/tambah"
       class="flex text-red-600 items-center cursor-pointer"
     >
       <HeartIcon />

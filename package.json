@@ -9,6 +9,7 @@
   "dependencies": {
     "autoprefixer": "^10.4.2",
     "axios": "^0.25.0",
+    "bootstrap": "^5.3.3",
     "pinia": "^2.0.17",
     "postcss": "^8.4.5",
     "sweetalert2": "^11.10.8",
