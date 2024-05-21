@@ -59,6 +59,16 @@ const routes = [
       leaveClass: "animate__animated animate__fadeOutRight",
     },
   },
+  {
+    path: "/pembayaran",
+    name: "pembayaran",
+    component: () => import("../views/pembayaran.vue"),
+    props: true,
+    meta: {
+      enterClass: "animate__animated animate__fadeInRight",
+      leaveClass: "animate__animated animate__fadeOutRight",
+    },
+  },
 ];
 
 const router = createRouter({

@@ -25,6 +25,10 @@ import { onMounted } from "vue";
 onMounted(loadKompetisiDetail);
 
 const daftarKompetisi = () => {
+  if (kompetisiDetail.value && kompetisiDetail.value.biaya_pendaftaran) {
+    // Simpan biaya pendaftaran ke local storage
+    localStorage.setItem('biaya', kompetisiDetail.value.biaya_pendaftaran);
+  }
   // Arahkan pengguna ke halaman /daftar dengan menyertakan properti id
   router.push({ path: `/daftar/${props.id}` });
 };

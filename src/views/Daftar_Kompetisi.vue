@@ -15,12 +15,16 @@
       </div>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+    <div v-if="showQR" class="qr-code">
+        <img :src="qrCodeSrc" alt="QR Code">
+        <p>Bayar Sebelum Halaman Di alihkan ( 1 menit ) </p>
+      </div>
   </div>
 </template>
 
 <script setup>
 import axios from 'axios';
-import { ref, defineProps } from 'vue';
+import { ref, defineProps, onMounted } from 'vue';
 import { useRouter } from 'vue-router'; // Mengimpor useRouter dari Vue Router
 
 const router = useRouter(); // Inisialisasi router
@@ -36,14 +40,62 @@ const personalInfo = ref({
   phone_number: ''
 });
 
+const formData = ref({
+  name: '',
+  biaya_pendaftaran: '',
+  id_pendaftaran: ''
+});
+
+const showQR = ref(false); // Initially hide QR code
+let qrCodeSrc = ''; // QR code source
+
+// Retrieve biaya_pendaftaran from local storage
+const localStorageBiaya = localStorage.getItem('biaya') || '';
+
+// On component mount, set the retrieved biaya_pendaftaran value
+onMounted(() => {
+  formData.biaya_pendaftaran = localStorageBiaya;
+});
+
 const submitForm = async () => {
   try {
-    await axios.post('http://localhost:8000/api/daftar/tambah', personalInfo.value);
+    // await axios.post('http://localhost:8000/api/daftar/tambah', personalInfo.value);
+    await axios.post('http://localhost:8000/api/tambahdaftar', personalInfo.value);
     console.log('Data terkirim!');
-    router.push('/home');
+
+    const paymentResponse = await axios.post('http://localhost:8000/api/procces-payment', {
+      name: personalInfo.value.nama,
+      id_pendaftaran: personalInfo.value.id_kompetisi,
+      biaya_pendaftaran: localStorageBiaya
+    });
+    console.log('Payment processed:', paymentResponse.data);
+
+    // Generate QR code from the payment response
+    qrCodeSrc = paymentResponse.data.qr;
+
+    // Show QR code section
+    showQR.value = true;
+
+    // Automatically redirect after 20 seconds
+    setTimeout(() => {
+      window.location.href = '/home';
+    }, 600000);
+
   } catch (error) {
-    console.error('Gagal mengirim data:', error);
-    console.log(personalInfo.value)
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.error('Error response data:', error.response.data);
+      console.error('Error response status:', error.response.status);
+      console.error('Error response headers:', error.response.headers);
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.error('Error request data:', error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.error('Error message:', error.message);
+    }
+    console.error('Error config:', error.config);
   }
 };
 </script>
