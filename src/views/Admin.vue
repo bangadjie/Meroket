@@ -41,14 +41,15 @@ const fetchCompetitions = async () => {
 };
 
 const editCompetition = (id) => {
-  router.push(`/admin/edit/${id}`);
+  router.push(`/edit/${id}`);
 };
 
 const deleteCompetition = async (id) => {
   if (confirm('Are you sure you want to delete this competition?')) {
     try {
-      await axios.delete(`http://localhost:8000/api/competitions/${id}`);
+      await axios.delete(`http://localhost:8000/api/kompetisi/hapus/${id}`);
       await fetchCompetitions(); // Refresh the list
+      router.push({ path: `/admin` });
     } catch (error) {
       console.error('Error deleting competition:', error);
     }

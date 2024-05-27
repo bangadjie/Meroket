@@ -99,6 +99,16 @@ const routes = [
       leaveClass: "animate__animated animate__fadeOutRight",
     },
   },
+  {
+    path: "/edit/:id",
+    name: "edit",
+    component: () => import("../views/edit.vue"),
+    props: true,
+    meta: {
+      enterClass: "animate__animated animate__fadeInRight",
+      leaveClass: "animate__animated animate__fadeOutRight",
+    },
+  },
 ];
 
 const router = createRouter({
