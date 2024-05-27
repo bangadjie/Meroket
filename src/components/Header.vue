@@ -16,10 +16,6 @@ import HeartIcon from "./icons/HeartIcon.vue";
           Find Competition
         </router-link>
 
-        <router-link to="/teams" class="text-gray-200 text-sm tracking-wide md:text-lg">
-          Teams
-        </router-link>
-
         <router-link to="/favorit" class="text-gray-200 text-sm tracking-wide md:text-lg">
           Favorite
         </router-link>

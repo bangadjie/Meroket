@@ -89,6 +89,16 @@ const routes = [
       leaveClass: "animate__animated animate__fadeOutRight",
     },
   },
+  {
+    path: "/admin",
+    name: "admin",
+    component: () => import("../views/Admin.vue"),
+    props: true,
+    meta: {
+      enterClass: "animate__animated animate__fadeInRight",
+      leaveClass: "animate__animated animate__fadeOutRight",
+    },
+  },
 ];
 
 const router = createRouter({
