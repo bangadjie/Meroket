@@ -17,7 +17,7 @@
     </form>
     <div v-if="showQR" class="qr-code">
         <img :src="qrCodeSrc" alt="QR Code">
-        <p>Bayar Sebelum Halaman Di alihkan ( 1 menit ) </p>
+        <p style="color:white">Bayar Sebelum Halaman Di alihkan ( 1 menit ) </p>
       </div>
   </div>
 </template>
@@ -61,6 +61,13 @@ const submitForm = async () => {
   try {
     // await axios.post('http://localhost:8000/api/daftar/tambah', personalInfo.value);
     await axios.post('http://localhost:8000/api/tambahdaftar', personalInfo.value);
+    // Get existing IDs from local storage or initialize an empty array
+    const storedIds = JSON.parse(localStorage.getItem('id_kompetisi') || '[]');
+    // Add the new ID to the array
+    storedIds.push(props.id);
+    // Save the updated array back to local storage
+    localStorage.setItem('id_kompetisi', JSON.stringify(storedIds));
+    
     console.log('Data terkirim!');
 
     const paymentResponse = await axios.post('http://localhost:8000/api/procces-payment', {
@@ -79,7 +86,7 @@ const submitForm = async () => {
     // Automatically redirect after 20 seconds
     setTimeout(() => {
       window.location.href = '/home';
-    }, 600000);
+    }, 60000);
 
   } catch (error) {
     if (error.response) {
