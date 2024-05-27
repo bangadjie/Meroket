@@ -17,17 +17,17 @@
     </form>
     <div v-if="showQR" class="qr-code">
         <img :src="qrCodeSrc" alt="QR Code">
-        <p style="color:white">Bayar Sebelum Halaman Di alihkan ( 1 menit ) </p>
-      </div>
+        <p style="color:white">Bayar Sebelum Halaman Di alihkan (1 menit)</p>
+    </div>
   </div>
 </template>
 
 <script setup>
 import axios from 'axios';
 import { ref, defineProps, onMounted } from 'vue';
-import { useRouter } from 'vue-router'; // Mengimpor useRouter dari Vue Router
+import { useRouter } from 'vue-router'; 
 
-const router = useRouter(); // Inisialisasi router
+const router = useRouter(); 
 
 const props = defineProps({
   id: String,
@@ -46,26 +46,19 @@ const formData = ref({
   id_pendaftaran: ''
 });
 
-const showQR = ref(false); // Initially hide QR code
-let qrCodeSrc = ''; // QR code source
+const showQR = ref(false); 
+let qrCodeSrc = ''; 
 
-// Retrieve biaya_pendaftaran from local storage
-const localStorageBiaya = localStorage.getItem('biaya') || '';
-
-// On component mount, set the retrieved biaya_pendaftaran value
 onMounted(() => {
   formData.biaya_pendaftaran = localStorageBiaya;
 });
 
 const submitForm = async () => {
   try {
-    // await axios.post('http://localhost:8000/api/daftar/tambah', personalInfo.value);
     await axios.post('http://localhost:8000/api/tambahdaftar', personalInfo.value);
-    // Get existing IDs from local storage or initialize an empty array
+    
     const storedIds = JSON.parse(localStorage.getItem('id_kompetisi') || '[]');
-    // Add the new ID to the array
     storedIds.push(props.id);
-    // Save the updated array back to local storage
     localStorage.setItem('id_kompetisi', JSON.stringify(storedIds));
     
     console.log('Data terkirim!');
@@ -77,29 +70,21 @@ const submitForm = async () => {
     });
     console.log('Payment processed:', paymentResponse.data);
 
-    // Generate QR code from the payment response
     qrCodeSrc = paymentResponse.data.qr;
-
-    // Show QR code section
     showQR.value = true;
 
-    // Automatically redirect after 20 seconds
     setTimeout(() => {
       window.location.href = '/home';
     }, 60000);
 
   } catch (error) {
     if (error.response) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx
       console.error('Error response data:', error.response.data);
       console.error('Error response status:', error.response.status);
       console.error('Error response headers:', error.response.headers);
     } else if (error.request) {
-      // The request was made but no response was received
       console.error('Error request data:', error.request);
     } else {
-      // Something happened in setting up the request that triggered an Error
       console.error('Error message:', error.message);
     }
     console.error('Error config:', error.config);
@@ -152,5 +137,21 @@ const submitForm = async () => {
 .btn-primary:hover {
   background-color: #0056b3;
   border-color: #0056b3;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  margin-top: 10px;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
 }
 </style>

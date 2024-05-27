@@ -7,6 +7,15 @@ const props = defineProps({
   id: String,
 });
 
+const addFavorite = () => {
+  const favoriteIds = JSON.parse(localStorage.getItem('favorite_kompetisi') || '[]');
+  if (!favoriteIds.includes(props.id)) {
+    favoriteIds.push(props.id);
+    localStorage.setItem('favorite_kompetisi', JSON.stringify(favoriteIds));
+    console.log('Added to favorites:', props.id);
+    router.push({ path: `/favorit` });
+  }
+};
 const kompetisiDetail = ref(null);
 const router = useRouter(); // Inisialisasi router
 
@@ -51,6 +60,8 @@ const daftarKompetisi = () => {
         <p class="text-gray-300">Biaya Pendaftaran: {{ kompetisiDetail.biaya_pendaftaran }}</p>
         <br><br>
         <button class="daftar-btn" @click="daftarKompetisi">Daftar</button>
+        <br>
+        <button @click="addFavorite" class="daftar-btn">Tambah Favorit</button>
       </div>
     </article>
   </main>
@@ -65,6 +76,7 @@ const daftarKompetisi = () => {
   width: 100%;
   max-width: 100%;
   cursor: pointer;
+  margin: 10px;
 }
 
 .daftar-btn:hover {
