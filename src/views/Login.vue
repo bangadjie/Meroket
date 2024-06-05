@@ -61,8 +61,17 @@ export default {
     });
 
     onMounted(() => {
-      // Initialize form values here if needed
-    });
+        checkLogin();    
+      });
+
+    const checkLogin = () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        // Redirect to /home if the token exists
+        router.push('/home');
+      }
+      // Do nothing if no token is found
+    };
 
     const submitLogin = async () => {
       // Melihat data yang akan dikirim
@@ -85,7 +94,17 @@ export default {
         localStorage.setItem('token', response.data.authorization.token);
         localStorage.setItem('usertype', response.data.user.usertype);
 
-        router.push('/home');
+        const usertype = response.data.user.usertype;
+
+        // Arahkan pengguna berdasarkan usertype
+        if (usertype === 'admin') {
+          router.push('/admin');
+        } else if (usertype === 'user') {
+          router.push('/home');
+        } else {
+          // Anda dapat menambahkan logika untuk jenis usertype lain atau fallback
+          router.push('/');
+        }
       } catch (error) {
         showErrorMessage('Login failed. Please check your credentials.');
       }

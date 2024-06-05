@@ -3,7 +3,7 @@
     <h1 class="text-2xl font-bold mb-4" style="color:white">Admin Panel</h1>
     <div v-if="competitions.length" class="competition-list">
       <div v-for="competition in competitions" :key="competition.id" class="competition-item mb-4 p-4 bg-gray-100 rounded-lg">
-        <h2 class="text-xl font-semibold">{{ competition.nama_kompetisi }}</h2>
+        <h2 class="text-xl font-semibold" style="color:black">{{ competition.nama_kompetisi }}</h2>
         <br>
         <p >{{ competition.deskripsi }}</p>
         <br>
@@ -23,13 +23,43 @@
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import Swal from 'sweetalert2';
 
 const router = useRouter();
 const competitions = ref([]);
 
 onMounted(async () => {
+  checkRole();
   await fetchCompetitions();
 });
+
+const checkRole = () => {
+  const role = localStorage.getItem('usertype');
+  
+  if (!role) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Login Required',
+      text: 'Please login first.',
+      confirmButtonText: 'OK'
+    }).then(() => {
+      router.push('/'); // Redirect to login page
+    });
+  } else if (role === 'user') {
+    router.push('/home'); // Redirect to home page for users
+  } else if (role === 'admin') {
+    // Admin is allowed to access this page, so no redirection needed
+  } else {
+    Swal.fire({
+      icon: 'error',
+      title: 'Access Denied',
+      text: 'You do not have permission to access this page.',
+      confirmButtonText: 'OK'
+    }).then(() => {
+      router.push('/'); // Redirect to login page or another appropriate page
+    });
+  }
+};
 
 const fetchCompetitions = async () => {
   try {
