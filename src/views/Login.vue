@@ -81,6 +81,10 @@ export default {
         // Menampilkan respons dari server
         console.log('Respon dari server:', response.data);
 
+        //simpan data ke localstorage
+        localStorage.setItem('token', response.data.authorization.token);
+        localStorage.setItem('usertype', response.data.user.usertype);
+
         router.push('/home');
       } catch (error) {
         showErrorMessage('Login failed. Please check your credentials.');

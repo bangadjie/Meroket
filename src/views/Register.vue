@@ -79,7 +79,7 @@ export default {
           }
         });
         
-        router.push('/home');
+        router.push('/');
       } catch (error) {
         showErrorMessage('Registration failed. Please try again later.');
       }

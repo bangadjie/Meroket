@@ -35,8 +35,9 @@
 
 <script setup>
 import axios from 'axios';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router'; // Mengimpor useRouter dari Vue Router
+import Swal from 'sweetalert2';
 
 const router = useRouter(); // Inisialisasi router
 
@@ -48,8 +49,29 @@ const form = ref({
   foto_poster:''
 });
 
+onMounted(() => {
+  //pangil function apakah token sudah ada
+  checkToken();
+});
+
+//ini buat cek token
+const checkToken = () => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Login Required',
+      text: 'Please login first.',
+      confirmButtonText: 'OK'
+    }).then(() => {
+      router.push('/'); // Redirect to login page
+    });
+  }
+};
+
 const submitForm = async () => {
   try {
+    const token = localStorage.getItem('token');
     await axios.post('http://localhost:8000/api/kompetisi/tambah', form.value);
     router.push('/home');
     // Redirect to success page or do something else after successful submission

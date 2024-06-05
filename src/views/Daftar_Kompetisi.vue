@@ -26,6 +26,7 @@
 import axios from 'axios';
 import { ref, defineProps, onMounted } from 'vue';
 import { useRouter } from 'vue-router'; 
+import Swal from 'sweetalert2';
 
 const router = useRouter(); 
 
@@ -49,9 +50,29 @@ const formData = ref({
 const showQR = ref(false); 
 let qrCodeSrc = ''; 
 
+// Retrieve biaya_pendaftaran from local storage
+const localStorageBiaya = localStorage.getItem('biaya') || '';
+
 onMounted(() => {
+  //pangil function apakah token sudah ada
+  checkToken();
   formData.biaya_pendaftaran = localStorageBiaya;
 });
+
+//ini buat cek token
+const checkToken = () => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Login Required',
+      text: 'Please login first.',
+      confirmButtonText: 'OK'
+    }).then(() => {
+      router.push('/'); // Redirect to login page
+    });
+  }
+};
 
 const submitForm = async () => {
   try {
